@@ -100,6 +100,6 @@ for ckpt_id in ckpt_ids:
                 n_images += 1
             
             outrate = n_images / sum(runtimes) if sum(runtimes) > 0 else float('inf')
-            print(f'\r[TEST] Iter: {ckpt_id:{w_iters}d} | Batch: {batch+1:{w_batch}d}/{n_batch} @ {outrate:.2f} img/sec [{target}]', end='')
-        
+            print(f'\r[TEST] Iter: {ckpt_id:{w_iters}d} | Batch: {batch+1:{w_batch}d}/{n_batch}',
+                  f'@ {outrate:.2f} img/sec [{"AB".replace(target, "")} -> {target}]', end='')
         print('')
