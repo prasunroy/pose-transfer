@@ -6,8 +6,8 @@ class SSDScore(object):
     
     def __init__(self, precision='fp32', use_gpu=True):
         self.precision = precision
-        self.model = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_ssd', model_math=precision)
-        self.utils = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_ssd_processing_utils')
+        self.model = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_ssd', model_math=precision, verbose=False)
+        self.utils = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_ssd_processing_utils', verbose=False)
         if use_gpu and torch.cuda.is_available():
             self.model.to('cuda')
         self.model.eval()

@@ -7,9 +7,9 @@ class LPIPSScore(object):
     
     def __init__(self, use_gpu=True):
         self.cuda = True if use_gpu and torch.cuda.is_available() else False
-        self.lpips_alx = lpips.LPIPS(net='alex')
-        self.lpips_vgg = lpips.LPIPS(net='vgg')
-        self.lpips_sqz = lpips.LPIPS(net='squeeze')
+        self.lpips_alx = lpips.LPIPS(net='alex', verbose=False)
+        self.lpips_vgg = lpips.LPIPS(net='vgg', verbose=False)
+        self.lpips_sqz = lpips.LPIPS(net='squeeze', verbose=False)
         if self.cuda:
             self.lpips_alx.cuda()
             self.lpips_vgg.cuda()
