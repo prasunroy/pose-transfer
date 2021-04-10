@@ -31,4 +31,5 @@ if __name__ == '__main__':
     ap.add_argument('-o', required=True, help='output directory')
     ap.add_argument('-k', required=True, help='keypoints data')
     args = vars(ap.parse_args())
+    
     generate_posemaps(args['o'], args['k'], verbose=True)
