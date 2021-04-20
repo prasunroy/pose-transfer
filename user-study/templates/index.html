@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Prasun Roy">
+    <meta name="description" content="User Study on Multi-scale Attention Guided Pose Transfer.">
+    <meta name="keywords" content="pose transfer, attention, gan, deepfashion, user study">
+    <title>User Study on Multi-scale Attention Guided Pose Transfer</title>
+    <link rel="icon" type="image/x-icon" href="static/site/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Roboto+Mono&display=swap">
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+      html, body {display: flex; flex-direction: column; min-height: 100vh; font-family: "Roboto Mono", monospace;}
+      .pt-loader {left: 0; top: 0; width: 100%; height: 100%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: 9999; background-color: #202020;}
+      .pt-header {font-family: "Bree Serif", sans-serif;}
+      .pt-inform {padding: 4.0rem 2.0rem 4.0rem 2.0rem;}
+      .pt-footer {padding: 2.0rem 0.0rem 2.0rem 0.0rem;}
+      .pt-marked {color: #ff0080;}
+    </style>
+  </head>
+  <body>
+    <div class="pt-loader">
+      <img src="static/site/loader.svg">
+    </div>
+    <div class="container box is-shadowless has-text-centered">
+      <h1 class="title pt-header pt-marked">User Study</h1>
+      <h1 class="title pt-header">Multi-scale Attention Guided Pose Transfer</h1>
+      <p class="subtitle has-text-justified is-size-6 pt-inform">
+        At present, a quantifiable metric for visual quality assesment of images is an open problem in computer vision.
+        Although there exists a few widely used evaluation metrics for quantifying visual quality, a sufficiently large
+        number of outliers show the limitations of these metrics to be able to generalize the subjective nature of such
+        assesment. Therefore, human perception is perhaps the most reliable way to assess visual quality. In this study,
+        we intend to analyze the visual quality of the generated images from our work as perceived by humans. There are
+        two tasks - a constrained test followed by an unconstrained test. In the constrained test, users need to perform
+        discrimination between real and fake images within a fixed amount of time. In the unconstrained test, users need
+        to perform similar discrimination but without any time limit.
+        <strong>Users DO NOT require to provide any personal data. All submission scores will be recorded anonymously.</strong>
+      </p>
+      <label class="checkbox">
+        <input type="checkbox" id="accept">
+        &nbsp;I understand and agree to take part in this study and submit my scores anonymously.
+      </label>
+      <br><br><br><br>
+      <button class="button is-large is-success" id="gonext" disabled>Start</button>
+    </div>
+    <div class="pt-footer">
+      <p class="has-text-centered is-size-7">
+        Copyright <span><i class="fas fa-copyright"></i></span> 2021 by the authors |
+        Made with <span class="pt-marked"><i class="fas fa-heart animate__animated animate__jello animate__infinite"></i></span> on Earth.
+      </p>
+    </div>
+    <script>
+      const loader = document.querySelector(".pt-loader");
+      const accept = document.querySelector("#accept");
+      const gonext = document.querySelector("#gonext");
+      accept.addEventListener("change", function () {
+        if (this.checked) {
+          gonext.disabled = false;
+        }
+        else {
+          gonext.disabled = true;
+        }
+      }, false);
+      gonext.addEventListener("click", function () {
+        window.location.href = "/practice";
+      }, false);
+      window.addEventListener("load", function () {
+        accept.checked = false;
+        gonext.disabled = true;
+        loader.classList.add("animate__animated", "animate__fadeOut");
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 1000);
+      }, false);
+    </script>
+  </body>
+</html>

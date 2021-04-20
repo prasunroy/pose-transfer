@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Prasun Roy">
+    <meta name="description" content="User Study on Multi-scale Attention Guided Pose Transfer.">
+    <meta name="keywords" content="pose transfer, attention, gan, deepfashion, user study">
+    <title>Constrained Test | User Study on Multi-scale Attention Guided Pose Transfer</title>
+    <link rel="icon" type="image/x-icon" href="static/site/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Roboto+Mono&display=swap">
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+      html, body {display: flex; flex-direction: column; min-height: 100vh; font-family: "Roboto Mono", monospace;}
+      .pt-loader {left: 0; top: 0; width: 100%; height: 100%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: 9999; background-color: #202020;}
+      .pt-header {font-family: "Bree Serif", sans-serif;}
+      .pt-inform {padding: 4.0rem 4.0rem 2.0rem 4.0rem;}
+      .pt-footer {padding: 2.0rem 0.0rem 2.0rem 0.0rem;}
+      .pt-marked {color: #ff0080;}
+      .pt-imtest {border: 8px solid gray;}
+    </style>
+  </head>
+  <body>
+    <div class="pt-loader">
+      <img src="static/site/loader.svg">
+    </div>
+    <div class="container box is-shadowless has-text-centered">
+      <h1 class="title pt-header pt-marked">User Study #1 - Constrained Test</h1>
+      <h1 class="title pt-header">Multi-scale Attention Guided Pose Transfer</h1>
+      <p class="subtitle has-text-justified is-size-6 pt-inform">
+        In this test, you will be shown some images one by one. Each image will be shown for 5 seconds only.
+        You need to identify whether the displayed image is <strong>REAL</strong> or <strong>FAKE</strong>
+        within this time limit. <strong>If you do not select an option within the given time limit, the image
+        will be automatically considered as REAL.</strong>
+      </p>
+      <button class="button is-large is-primary" id="gotest">Start</button>
+      <div id="test-container">
+        <h1 class="subtitle" id="test-number"></h1>
+        <div id="test-images-container"></div>
+        <br>
+        <h1 class="subtitle" id="test-status"></h1>
+        <br>
+        <div>
+          <button class="button is-success" id="real">REAL</button>
+          <button class="button is-danger" id="fake">FAKE</button>
+        </div>
+      </div>
+      <h1 class="subtitle pt-inform" id="status"></h1>
+      <button class="button is-large is-success" id="gonext" disabled>Next</button>
+    </div>
+    <div class="pt-footer">
+      <p class="has-text-centered is-size-7">
+        Copyright <span><i class="fas fa-copyright"></i></span> 2021 by the authors |
+        Made with <span class="pt-marked"><i class="fas fa-heart animate__animated animate__jello animate__infinite"></i></span> on Earth.
+      </p>
+    </div>
+    <script>
+      const loader = document.querySelector(".pt-loader");
+      const gotest = document.querySelector("#gotest");
+      const status = document.querySelector("#status");
+      const gonext = document.querySelector("#gonext");
+      const testContainerNode = document.querySelector("#test-container");
+      const testController = new class TestController {
+        constructor (containerNode) {
+          this.testImagesContainer = containerNode.querySelector("#test-images-container");
+          this.testNumberDisplay = containerNode.querySelector("#test-number");
+          this.testStatusDisplay = containerNode.querySelector("#test-status");
+          this.testAnswerButtons = containerNode.querySelectorAll("button");
+          this.imageURLs = [];
+          this.images = [];
+          this.index = 0;
+          this.userChoices = {};
+          this.testID = 1;
+          this.init();
+        }
+        init () {
+          let xhr = new XMLHttpRequest();
+          xhr.open("GET", "/images", true);
+          xhr.onload = () => {
+            let response = JSON.parse(xhr.response);
+            if (xhr.status == 200 && response.success) {
+              this.imageURLs = response.images;
+              this.initTestContainer();
+            }
+            else {
+              window.location.href = "/error";
+            }
+          };
+          xhr.onerror = () => {
+            window.location.href = "/error";
+          };
+          xhr.send();
+        }
+        initTestContainer () {
+          this.imageURLs.forEach((imageURL) => {
+            let img = document.createElement("img");
+            img.style.display = "none";
+            img.setAttribute("class", "pt-imtest animate__animated");
+            img.src = imageURL;
+            this.testImagesContainer.appendChild(img);
+            this.userChoices[imageURL] = 1;
+          });
+          this.images = this.testImagesContainer.querySelectorAll("img");
+          this.testNumberDisplay.innerHTML = "";
+          this.testStatusDisplay.innerHTML = "";
+          this.testAnswerButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              let answer = button.id == "real" ? 1 : 0;
+              this.userChoices[this.imageURLs[this.index]] = answer;
+              this.images[this.index].style.borderColor = "#8080ff";
+              this.testStatusDisplay.innerHTML = `Selected ${button.innerHTML}!`;
+            }, false);
+          });
+        }
+        hideImage (index, animClass, delay=0) {
+          if (index >= 0 && index < this.images.length) {
+            this.images[index].className = "pt-imtest animate__animated";
+            this.images[index].classList.add(animClass);
+            setTimeout(() => {
+              this.images[index].style.display = "none";
+            }, delay);
+          }
+        }
+        showImage (index, animClass, delay=0) {
+          if (index >= 0 && index < this.images.length) {
+            setTimeout(() => {
+              this.images[index].style.display = "inline";
+              this.images[index].className = "pt-imtest animate__animated";
+              this.images[index].classList.add(animClass);
+              this.testNumberDisplay.innerHTML = `Image ${index+1}/${this.images.length}`;
+              this.testStatusDisplay.innerHTML = "Is this image REAL or FAKE?";
+              this.enableButtons();
+            }, delay);
+            this.index = index;
+          }
+        }
+        nextImage () {
+          this.disableButtons();
+          if (this.index >= 0 && this.index < this.images.length - 1) {
+            this.hideImage(this.index, "animate__fadeOutLeft", 1000);
+            this.showImage(++this.index, "animate__fadeInRight", 1000);
+          }
+        }
+        prevImage () {
+          this.disableButtons();
+          if (this.index >= 1 && this.index < this.images.length) {
+            this.hideImage(this.index, "animate__fadeOutRight", 1000);
+            this.showImage(--this.index, "animate__fadeInLeft", 1000);
+          }
+        }
+        enableButtons () {
+          this.testAnswerButtons.forEach((button) => {
+            button.disabled = false;
+          });
+        }
+        disableButtons () {
+          this.testAnswerButtons.forEach((button) => {
+            button.disabled = true;
+          });
+        }
+      } (testContainerNode);
+      const submit = () => {
+        gonext.style.display = "none";
+        status.style.display = "block";
+        status.innerHTML = `<span class="icon"><i class="fas fa-sync-alt fa-spin fa-2x"></i></span>`;
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/submit", true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.onload = () => {
+          let response = JSON.parse(xhr.response);
+          if (xhr.status == 200 && response.success) {
+            status.innerHTML = `Your have identified <strong>${((2.0 - (response.user_r2g + response.user_g2r)) * 50.0).toFixed(1)}%</strong> images correctly!`;
+            status.classList.add("animate__animated", "animate__zoomIn");
+            setTimeout(() => {
+              gonext.disabled = false;
+              gonext.style.opacity = 0.0;
+              gonext.style.display = "inline";
+              gonext.classList.add("animate__animated", "animate__fadeIn");
+            }, 500);
+          }
+          else {
+            window.location.href = "/error";
+          }
+        };
+        xhr.onerror = () => {
+          window.location.href = "/error";
+        };
+        xhr.send(JSON.stringify({
+          "data": testController.userChoices,
+          "mode": testController.testID
+        }));
+      };
+      gotest.addEventListener("click", function () {
+        this.disabled = true;
+        this.classList.add("animate__animated", "animate__fadeOut");
+        setTimeout(() => {
+          this.style.display = "none";
+          testContainerNode.style.display = "inline";
+          testController.showImage(0, "animate__fadeInRight", delay=0);
+          let autoScroller = setInterval(() => {
+            if (testController.index >= testController.images.length - 1) {
+              clearInterval(autoScroller);
+              submit();
+            }
+            testController.nextImage();
+          }, 5000);
+        }, 1000);
+      }, false);
+      gonext.addEventListener("click", function () {
+        window.location.href = "/test2";
+      }, false);
+      window.addEventListener("load", function () {
+        testContainerNode.style.display = "none";
+        status.style.display = "none";
+        gonext.style.display = "none";
+        loader.classList.add("animate__animated", "animate__fadeOut");
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 1000);
+      }, false);
+    </script>
+  </body>
+</html>
