@@ -104,7 +104,7 @@ random.shuffle(fake_images)
 # initialize and configure application
 app = Flask(__name__)
 
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 
 
 # enable Cross-Origin Resource Sharing (CORS)
