@@ -30,12 +30,6 @@ delete_cache = False
 # -----------------------------------------------------------------------------
 
 
-assert len(real_images) >= num_images_per_category,\
-    f'Minimum number of real images should be {num_images_per_category} but found {len(real_images)}'
-assert len(fake_images) >= num_images_per_category,\
-    f'Minimum number of fake images should be {num_images_per_category} but found {len(fake_images)}'
-
-
 # write a csv file
 def write_csv(path, mode, data):
     with open(path, mode, newline='') as fp:
@@ -43,8 +37,32 @@ def write_csv(path, mode, data):
         writer.writerow(data)
 
 
+# verify integrity of database
+if not os.path.isfile(database):
+    delete_cache = True
+else:
+    print('[INFO] Verifying integrity of database... ', end='')
+    with open(database, 'r') as fp:
+        db = json.load(fp)
+    if len(db) < 2 * num_images_per_category:
+        delete_cache = True
+    else:
+        for fp, label in db.items():
+            if not os.path.isfile(fp) or not label in [1, 0]:
+                delete_cache = True
+                break
+    if delete_cache:
+        print('integrity failure')
+    else:
+        print('OK')
+
+
 # delete cache
 if delete_cache:
+    assert len(real_images) >= num_images_per_category,\
+        f'Minimum number of real images specified to be {num_images_per_category} but found {len(real_images)}'
+    assert len(fake_images) >= num_images_per_category,\
+        f'Minimum number of fake images specified to be {num_images_per_category} but found {len(fake_images)}'
     if os.path.isdir(imagedir):
         print('[INFO] Deleting image cache... ', end='')
         shutil.rmtree(imagedir)
