@@ -11,7 +11,7 @@ def generate_posemaps(out_dir, keypoints_data, verbose=False):
     for i in range(len(df)):
         file_id = str(df.iloc[i, 0])
         img_h, img_w = np.uint32(df.iloc[i, 1:3])
-        keypoints = np.int32(df.iloc[i, 3:]).reshape(-1, 2)
+        keypoints = np.int32(df.iloc[i, 3:39]).reshape(-1, 2)
         posemap = np.zeros((img_h, img_w, keypoints.shape[0]), dtype=np.uint8)
         for k in range(keypoints.shape[0]):
             col, row = keypoints[k]

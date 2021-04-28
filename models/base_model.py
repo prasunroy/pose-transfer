@@ -12,7 +12,6 @@ class BaseModel(ABC):
         self.losses = []
         self.gpuids = []
         self.device = None
-        
         self.setup()
     
     def setup(self, verbose=False):
@@ -90,6 +89,7 @@ class BaseModel(ABC):
             if len(self.gpuids) > 0 and torch.cuda.is_available():
                 network.to(self.gpuids[0])
                 network = nn.DataParallel(network, self.gpuids)
+                setattr(self, name, network)
             network.apply(init_params)
             if verbose:
                 print(f'[INFO] Network {name} initialized')
