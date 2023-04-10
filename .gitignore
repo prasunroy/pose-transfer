@@ -129,6 +129,8 @@ dmypy.json
 .pyre/
 
 # Project exlusions
+datasets/
+output/
 user-study/real_images/
 user-study/fake_images/
 user-study/static/images/practice/
