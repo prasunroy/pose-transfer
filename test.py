@@ -19,8 +19,8 @@ gpu_ids = [0]
 
 batch_size = 32
 
-run_id = ''
-ckpt_ids = []
+run_id = 'pretrained'
+ckpt_ids = [260500]
 
 ckpt_dir = f'../output/{dataset_name}/ckpt/{run_id}'
 save_dir = f'../output/{dataset_name}/test/{run_id}'

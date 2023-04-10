@@ -16,8 +16,8 @@ from utils.estimate_keypoints import KeypointEstimator
 # -----------------------------------------------------------------------------
 dataset_name = 'DeepFashion'
 
-run_id = ''
-ckpt_ids = []
+run_id = 'pretrained'
+ckpt_ids = [260500]
 
 test_dir = f'../output/{dataset_name}/test/{run_id}'
 save_dir = f'../output/{dataset_name}/eval/{run_id}'
