@@ -1,0 +1,14 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.0.0+cu118
+torchvision==0.15.1+cu118
+tensorboard==2.12.1
+numpy==1.23.5
+scipy==1.10.0
+opencv-contrib-python==4.7.0.72
+pillow==9.4.0
+scikit-image==0.19.3
+pandas==1.5.3
+lpips==0.1.4
+flask==2.2.2
+flask-cors==3.0.10
+git+https://github.com/prasunroy/openpose-pytorch.git
