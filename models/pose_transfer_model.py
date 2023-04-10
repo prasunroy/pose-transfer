@@ -92,7 +92,7 @@ class PoseTransferModel(BaseModel):
     
     @staticmethod
     def build_vgg19_sub_model(n_layers=0):
-        model = torchvision.models.vgg19(pretrained=True).features
+        model = torchvision.models.vgg19(weights='IMAGENET1K_V1').features
         layers = []
         for i, layer in enumerate(model.children()):
             if i >= n_layers:

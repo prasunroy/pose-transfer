@@ -36,32 +36,6 @@ class ResidualBlock(nn.Module):
         return y
 
 
-class SelfAttentionBlock(nn.Module):
-    
-    def __init__(self, num_channels):
-        super(SelfAttentionBlock, self).__init__()
-        hidden_channels = num_channels // 8 or num_channels
-        self.f = conv1x1(num_channels, hidden_channels)
-        self.g = conv1x1(num_channels, hidden_channels)
-        self.h = conv1x1(num_channels, hidden_channels)
-        self.v = conv1x1(hidden_channels, num_channels)
-        self.gamma = nn.Parameter(torch.zeros(1))
-        self.softmax = nn.Softmax(dim=1)
-    
-    def forward(self, x):
-        batch_size, num_channels, height, width = x.size()
-        num_features = height * width
-        fx = self.f(x).view(batch_size, -1, num_features)
-        gx = self.g(x).view(batch_size, -1, num_features)
-        hx = self.h(x).view(batch_size, -1, num_features)
-        fg = torch.bmm(fx.transpose(1, 2), gx)
-        attention_map = self.softmax(fg).transpose(1, 2)
-        ha = torch.bmm(hx, attention_map).view(batch_size, -1, height, width)
-        o = self.v(ha)
-        y = self.gamma * o + x
-        return y
-
-
 class NetG(nn.Module):
     
     def __init__(self, in1_channels, in2_channels, out_channels, ngf=64):
@@ -140,5 +114,4 @@ class NetG(nn.Module):
         y = y * torch.sigmoid(x2_d1)
         y = self.out_up4(y)
         y = self.out_conv1(y)
-        
         return y

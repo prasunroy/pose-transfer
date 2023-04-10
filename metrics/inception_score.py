@@ -30,7 +30,7 @@ class InceptionScore(object):
     
     def __init__(self, use_gpu=True):
         self.dtype = torch.cuda.FloatTensor if use_gpu and torch.cuda.is_available() else torch.FloatTensor
-        self.model = inception_v3(pretrained=True, transform_input=False).type(self.dtype)
+        self.model = inception_v3(weights='IMAGENET1K_V1', transform_input=False).type(self.dtype)
         self.model.eval()
     
     def _get_predictions(self, x, resize=False):

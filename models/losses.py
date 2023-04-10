@@ -31,7 +31,7 @@ class PerceptualLoss(nn.Module):
     
     def __init__(self, model=None, mean=None, std=None, mode='L1', scaling=True):
         super(PerceptualLoss, self).__init__()
-        self.model = models.vgg19(pretrained=True).features if not model else model
+        self.model = models.vgg19(weights='IMAGENET1K_V1').features if not model else model
         mean = torch.tensor([0.485, 0.456, 0.406]).float() if not mean else mean.float()
         std = torch.tensor([0.229, 0.224, 0.225]).float() if not std else std.float()
         self.register_buffer('mean', mean.view(1, mean.size(0), 1, 1))
