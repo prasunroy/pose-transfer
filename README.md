@@ -13,6 +13,8 @@
 
 ![results](https://user-images.githubusercontent.com/38404108/153917804-2788e6d8-ffed-4aa7-b097-08bb2335a624.png)
 
+<br>
+
 ### :zap: Getting Started
 ```bash
 mkdir pose2pose
@@ -23,6 +25,8 @@ git clone https://github.com/prasunroy/pose-transfer.git
 cd pose-transfer
 pip install -r requirements.txt
 ```
+
+<br>
 
 ### :fire: Quick test using the inference API
 ```python
@@ -36,6 +40,8 @@ reference = Image.open('./api-test/target_pose_reference.jpg')
 generated = p2p.transfer_as(condition, reference)
 generated.show()
 ```
+
+<br>
 
 ### Code organization for training, testing and evaluation
 * Download dataset files from [Google Drive](https://drive.google.com/drive/folders/11jM3r2kZHpO5O6TPOLsirz5W3XfPvZib) and extract into `datasets/DeepFashion` directory.
@@ -69,6 +75,8 @@ pose2pose
 
 > In the [paper](https://arxiv.org/pdf/2202.06777.pdf), all qualitative results are generated using the pretrained checkpoint at iteration **260500** and all quantitative evaluations are performed using the pretrained checkpoint at iteration **257500**.
 
+<br>
+
 ### External Links
 <h4>
   <a href="https://arxiv.org/abs/2202.06777">arXiv</a>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
@@ -76,6 +84,8 @@ pose2pose
   <a href="https://drive.google.com/drive/folders/1SDSEfWyP5ZFR8nA-zQLhwjBsRm7ggfWj">Pretrained Models</a>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
   <a href="https://drive.google.com/uc?export=download&id=1Y9MCw0liv38LcR2ShGATKVlmd4EUP3Jo">Images for User Study</a>
 </h4>
+
+<br>
 
 ### Citation
 ```
@@ -90,6 +100,8 @@ pose2pose
   doi     = {https://doi.org/10.1016/j.patcog.2023.109315}
 }
 ```
+
+<br>
 
 ### License
 ```
@@ -110,5 +122,6 @@ limitations under the License.
 
 >The pretrained models are released under Creative Commons Attribution 4.0 International ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)) license.
 
+<br>
 
 ##### Made with :heart: and :pizza: on Earth.
